@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Activity</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #cce7ff, #e6f3ff);
+      color: #03396c;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .task {
+      background: white;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.2s;
+    }
+
+    .task:hover {
+      transform: scale(1.02);
+    }
+
+    .task.completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    button {
+      background: #66b3ff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #3399ff;
+    }
+
+    .add-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .scroll-hint {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>🌤️ Daily Activity Tracker</h1>
+  <div class="scroll-hint">Scroll ke bawah untuk lihat aktivitas ✨</div>
+
+  <div class="container">
+    <div class="add-box">
+      <input type="text" id="taskInput" placeholder="Tambah kegiatan...">
+      <button onclick="addTask()">Tambah</button>
+    </div>
+
+    <div id="taskList"></div>
+  </div>
+
+  <script>
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const taskText = input.value.trim();
+
+      if (taskText === "") return;
+
+      const taskList = document.getElementById("taskList");
+
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task";
+
+      const span = document.createElement("span");
+      span.innerText = taskText;
+
+      const checkBtn = document.createElement("button");
+      checkBtn.innerText = "✔";
+      checkBtn.onclick = function () {
+        taskDiv.classList.toggle("completed");
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "✖";
+      deleteBtn.onclick = function () {
+        taskDiv.remove();
+      };
+
+      const btnGroup = document.createElement("div");
+      btnGroup.appendChild(checkBtn);
+      btnGroup.appendChild(deleteBtn);
+
+      taskDiv.appendChild(span);
+      taskDiv.appendChild(btnGroup);
+
+      taskList.appendChild(taskDiv);
+
+      input.value = "";
+    }
+
+    // Scroll animation
+    window.addEventListener("scroll", () => {
+      const tasks = document.querySelectorAll(".task");
+      tasks.forEach(task => {
+        const rect = task.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 50) {
+          task.style.opacity = 1;
+          task.style.transform = "translateY(0)";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
